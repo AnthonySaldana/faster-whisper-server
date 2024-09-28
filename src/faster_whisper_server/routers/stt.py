@@ -195,6 +195,7 @@ def transcribe_file(
         language = config.default_language
     if response_format is None:
         response_format = config.default_response_format
+    print("Start of transcribe_file")
     timestamp_granularities = asyncio.run(get_timestamp_granularities(request))
     if timestamp_granularities != DEFAULT_TIMESTAMP_GRANULARITIES and response_format != ResponseFormat.VERBOSE_JSON:
         logger.warning(
