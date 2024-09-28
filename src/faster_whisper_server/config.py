@@ -191,7 +191,7 @@ class Config(BaseSettings):
     Whether to enable the Gradio UI. You may want to disable this if you want to minimize the dependencies.
     """
 
-    default_language: Language | None = None
+    default_language: Language = Language.EN
     """
     Default language to use for transcription. If not set, the language will be detected automatically.
     It is recommended to set this as it will improve the performance.
