@@ -212,7 +212,8 @@ def transcribe_file(
         hotwords=hotwords,
     )
     segments = Segment.from_faster_whisper_segments(segments)
-
+    print("segments in transcribe_file")
+    print(segments)
     if stream:
         return segments_to_streaming_response(segments, transcription_info, response_format)
     else:
