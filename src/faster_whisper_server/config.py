@@ -4,7 +4,7 @@ from typing import Self
 from pydantic import BaseModel, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-SAMPLES_PER_SECOND = 16000
+SAMPLES_PER_SECOND = 8000
 BYTES_PER_SAMPLE = 2
 BYTES_PER_SECOND = SAMPLES_PER_SECOND * BYTES_PER_SAMPLE
 # 2 BYTES = 16 BITS = 1 SAMPLE
