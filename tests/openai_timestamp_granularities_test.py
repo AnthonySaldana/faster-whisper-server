@@ -1,44 +1,46 @@
 """OpenAI's handling of `response_format` and `timestamp_granularities` is a bit confusing and inconsistent. This test module exists to capture the OpenAI API's behavior with respect to these parameters."""  # noqa: E501
 
-from faster_whisper_server.server_models import TIMESTAMP_GRANULARITIES_COMBINATIONS, TimestampGranularities
+from pathlib import Path
+
 from openai import AsyncOpenAI, BadRequestError
 import pytest
 
+from faster_whisper_server.api_models import TIMESTAMP_GRANULARITIES_COMBINATIONS, TimestampGranularities
 
-@pytest.mark.asyncio()
-@pytest.mark.requires_openai()
+
+@pytest.mark.asyncio
+@pytest.mark.requires_openai
 @pytest.mark.parametrize("timestamp_granularities", TIMESTAMP_GRANULARITIES_COMBINATIONS)
 async def test_openai_json_response_format_and_timestamp_granularities_combinations(
     actual_openai_client: AsyncOpenAI,
     timestamp_granularities: TimestampGranularities,
 ) -> None:
-    audio_file = open("audio.wav", "rb")  # noqa: SIM115, ASYNC230
-
+    file_path = Path("audio.wav")
     if "word" in timestamp_granularities:
         with pytest.raises(BadRequestError):
             await actual_openai_client.audio.transcriptions.create(
-                file=audio_file,
+                file=file_path,
                 model="whisper-1",
                 response_format="json",
                 timestamp_granularities=timestamp_granularities,
             )
     else:
         await actual_openai_client.audio.transcriptions.create(
-            file=audio_file, model="whisper-1", response_format="json", timestamp_granularities=timestamp_granularities
+            file=file_path, model="whisper-1", response_format="json", timestamp_granularities=timestamp_granularities
         )
 
 
-@pytest.mark.asyncio()
-@pytest.mark.requires_openai()
+@pytest.mark.asyncio
+@pytest.mark.requires_openai
 @pytest.mark.parametrize("timestamp_granularities", TIMESTAMP_GRANULARITIES_COMBINATIONS)
 async def test_openai_verbose_json_response_format_and_timestamp_granularities_combinations(
     actual_openai_client: AsyncOpenAI,
     timestamp_granularities: TimestampGranularities,
 ) -> None:
-    audio_file = open("audio.wav", "rb")  # noqa: SIM115, ASYNC230
+    file_path = Path("audio.wav")
 
     transcription = await actual_openai_client.audio.transcriptions.create(
-        file=audio_file,
+        file=file_path,
         model="whisper-1",
         response_format="verbose_json",
         timestamp_granularities=timestamp_granularities,
